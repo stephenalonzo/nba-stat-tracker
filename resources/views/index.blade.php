@@ -1,12 +1,11 @@
 <x-layout>
     <section class="p-6">
-        <div class="mx-auto space-y-8 md:max-w-screen-sm">
-            <div class="space-y-4">
-                <h1 class="text-5xl font-semibold">Track your favorite players like a pro.</h1>
-                <p>From scoring trends to efficiency ratings, our NBA tracker delivers
-                    advanced stats and insights to help you understand what really happens on the court.</p>
+        <div class="mx-auto space-y-8 lg:max-w-screen-lg">
+            <div class="space-y-4 lg:text-center">
+                <h1 class="text-5xl font-semibold">Track your favorite player's stats like a pro.</h1>
+                <p>Your go-to hub for current-season player stats. Simple, accurate, and always up to date.</p>
             </div>
-            <div class="">
+            <div class="lg:mx-auto lg:max-w-screen-sm">
                 <form action="/search" method="get" class="p-4 rounded-md bg-[#f48c06] grid gap-4">
                     @csrf
                     <input type="text" name="playerName"
@@ -50,7 +49,7 @@
                         <option value="1993">1992-1993</option>
                     </select>
                     <button type="submit"
-                        class="px-5 py-2.5 rounded-md bg-white text-[#f48c06] hover:cursor-pointer">Submit</button>
+                        class="px-5 py-2.5 rounded-md bg-gray-900 text-white hover:cursor-pointer">Submit</button>
                 </form>
                 @if (session()->has('message'))
                     <p class="text-red-500">{{ session('message') }}</p>
