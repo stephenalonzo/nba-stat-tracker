@@ -27,9 +27,39 @@ class TrackerController extends Controller
         return view('index', compact(['points', 'assists', 'steals']));
     }
 
-    public function search()
+    public function search(TrackerRequest $request)
     {
-        // Get searched player's stats
+        $validated = $request->validated();
+
+        $response = Http::get('http://rest.nbaapi.com/api/PlayerDataTotals/query', [
+            'playerName' => $validated['playerName'],
+            'season' => $validated['season']
+        ]);
+        $data = $response->json();
+
+        $search = Str::ascii(strtolower($validated['playerName']));
+
+        $unique = collect($data)->filter(function ($player) use ($search) {
+            $name = $player['playerName'] ?? null;
+            $normalizedName = Str::ascii(strtolower(trim($name)));
+            return str_contains($normalizedName, $search);
+        })->values();
+
+        $players = $unique
+            ->sortByDesc('Season')
+            ->unique('playerName')
+            ->values();
+
+        if (count($players) != 0) {
+            return view('tracker.results', compact('players'));
+        }
+
+        return back()->with('message', 'Player stats does not exist.');
+    }
+
+
+    public function show()
+    {
         $response = Http::get('http://rest.nbaapi.com/api/PlayerDataTotals/query', [
             'playerName' => $_GET['playerName'],
             'season' => $_GET['season'],
@@ -47,12 +77,12 @@ class TrackerController extends Controller
                     'ascending' => 'false',
                     'pageSize' => 50
                 ]);
-                $players_all = $response_all->json();
+                $players_all = collect($response_all->json())->reject(fn($p) => $p['team'] === '2TM')->sortByDesc(['season', 'id']);
 
                 return view('tracker.show', compact(['player', 'players_all']));
             }
         }
 
-        return back()->with('message', 'Player stats does not exist.');
+        return view('index');
     }
 }

@@ -3,7 +3,7 @@
 use App\Http\Controllers\TrackerController;
 use Illuminate\Support\Facades\Route;
 
-// Any other url will be redirected back to the homepage
+// Any other url will be redirected back to the 
 Route::fallback(function () {
     return redirect('/');
 });
