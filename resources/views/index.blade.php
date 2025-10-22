@@ -13,8 +13,7 @@
                         placeholder="Enter player name">
                     <select name="season"
                         class="p-2.5 bg-white border border-gray-400 rounded-md placeholder:text-gray-400">
-                        <option selected disabled>Choose Season</option>
-                        <option value="2025">2024-2025</option>
+                        <option selected value="2025">2024-2025</option>
                         <option value="2024">2023-2024</option>
                         <option value="2023">2022-2023</option>
                         <option value="2022">2021-2022</option>

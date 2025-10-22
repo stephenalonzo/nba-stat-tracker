@@ -36,7 +36,7 @@ class TrackerController extends Controller
             'ascending' => 'true',
             'sortBy' => 'Team'
         ]);
-        $players = $response->json();
+        $players = collect($response->json())->reject(fn($p) => $p['team'] === '2TM')->sortByDesc('id');
 
         // If response is not a 404, then show stats
         if (($players['status'] ?? []) != 404) {
