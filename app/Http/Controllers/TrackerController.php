@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Http\Requests\TrackerRequest;
-use App\Models\Player;
 
 class TrackerController extends Controller
 {
@@ -38,17 +36,10 @@ class TrackerController extends Controller
         $data = $response->json();
 
         $search = Str::ascii(strtolower($validated['playerName']));
-
-        $unique = collect($data)->filter(function ($player) use ($search) {
+        $players = collect($data)->filter(function ($player) {
             $name = $player['playerName'] ?? null;
-            $normalizedName = Str::ascii(strtolower(trim($name)));
-            return str_contains($normalizedName, $search);
-        })->values();
-
-        $players = $unique
-            ->sortByDesc('Season')
-            ->unique('playerName')
-            ->values();
+            return $name;
+        })->sortByDesc('Season')->unique('playerName')->values();
 
         if (count($players) != 0) {
             return view('tracker.results', compact('players'));
