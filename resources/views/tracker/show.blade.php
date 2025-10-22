@@ -10,6 +10,7 @@
                     alt="" class="w-full h-60 object-contain">
             @endif
             <div class="p-6 bg-gray-100 text-center space-y-4 rounded-t-md border-t border-l border-r border-gray-400">
+                <p class="text-lg">{{ $player['team'] . ' | ' . $player['position'] }}</p>
                 <h3 class="font-semibold text-2xl">{{ $player['playerName'] ?? '' }}</h3>
                 <p class="text-lg">
                     @switch($player['season'])
